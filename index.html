@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="css/aos.css" />
 
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   </head>
 
   <body>
@@ -146,8 +147,8 @@
                       <th>PTS</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="table-body">
+                    <!-- <tr>
                       <td>1</td>
                       <td>
                         <strong class="text-white"
@@ -254,7 +255,7 @@
                       <td>0</td>
                       <td>0</td>
                       <td>0</td>
-                    </tr>
+                    </tr> -->
                   </tbody>
                 </table>
               </div>
@@ -353,5 +354,39 @@
     <script src="js/jquery.mb.YTPlayer.min.js"></script>
 
     <script src="js/main.js"></script>
+    <script>
+      $(document).ready(function () {
+        var csvUrl = "main.csv"; // Replace with the path to your CSV file
+
+        Papa.parse(csvUrl, {
+          download: true,
+          header: true,
+          complete: function (results) {
+            var data = results.data;
+            // Sort the data by points in descending order
+            data.sort(function (a, b) {
+              return b.PTS - a.PTS;
+            });
+
+            var tableBody = $("#table-body");
+            for (var i = 0; i < data.length; i++) {
+              var row = data[i];
+              var rowHtml = `
+                          <tr>
+                              <td>${i + 1}</td>
+                              <td><strong class="text-white">${
+                                row.Team
+                              }</strong></td>
+                              <td>${row.W}</td>
+                              <td>${row.D}</td>
+                              <td>${row.L}</td>
+                              <td>${row.PTS}</td>
+                          </tr>`;
+              tableBody.append(rowHtml);
+            }
+          },
+        });
+      });
+    </script>
   </body>
 </html>
