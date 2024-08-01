@@ -361,38 +361,39 @@
       $(document).ready(function () {
         var csvUrl = "main.csv"; // Replace with the path to your CSV file
 
-        Papa.parse(csvUrl, {
-          download: true,
-          header: true,
-          complete: function (results) {
-            var data = results.data;
-            // Sort the data by points in descending order
-            data.sort(function (a, b) {
-              return b.PTS - a.PTS;
-            });
+Papa.parse(csvUrl, {
+  download: true,
+  header: true,
+  complete: function (results) {
+    var data = results.data;
+    console.log(data); // Log the data for debugging
+    // Sort the data by points in descending order
+    data.sort(function (a, b) {
+      return b.Pts - a.Pts; // Make sure 'Pts' matches the CSV header
+    });
 
-            var tableBody = $("#table-body");
-            for (var i = 0; i < data.length; i++) {
-              var row = data[i];
-              var rowHtml = `
-                          <tr>
-                              <td>${i + 1}</td>
-                              <td><strong class="text-white">${
-                                row.Team
-                              }</strong></td>
-                             <td>${row.MP}</td>
+    var tableBody = $("#table-body");
+    for (var i = 0; i < data.length; i++) {
+      var row = data[i];
+      console.log(row); // Log each row for debugging
+      var rowHtml = `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong class="text-white">${row.Team}</strong></td>
+          <td>${row.MP}</td>
           <td>${row.W}</td>
           <td>${row.D}</td>
           <td>${row.L}</td>
           <td>${row.GF}</td>
           <td>${row.GA}</td>
           <td>${row.GD}</td>
-          <td>${row.PTS}</td>
-                          </tr>`;
-              tableBody.append(rowHtml);
-            }
-          },
-        });
+          <td>${row.Pts}</td>
+        </tr>`;
+      tableBody.append(rowHtml);
+    }
+  },
+});
+
       });
     </script>
   </body>
